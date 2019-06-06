@@ -1,2 +1,4 @@
 # easyFinance
-WordPress plugin to create budgets an invoices for a garage
+PHP program to create budgets and invoices for a garage.
+It allows to create Clients, Autos, Budgets and final invoices.
+
