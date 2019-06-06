@@ -8,8 +8,8 @@ $selectBudget = mysqli_query($db,"SELECT * FROM `budgets` WHERE `id` ='".$id."'"
 $budget = mysqli_fetch_array($selectBudget);
 if (is_array($budget)) {
 	extract($budget);
-	$selectBudgetServices = mysqli_query($db,"SELECT * FROM `budget_services` WHERE `budget_id` ='".$id."'") or trigger_error(mysqli_error($db),E_USER_ERROR);
-	$budget_services = mysqli_fetch_array($selectBudgetServices);
+	$selectBudgetServices = mysqli_query($db,"SELECT `budget_services`.*, `services`.`name`, `services`.`description` FROM `budget_services` INNER JOIN `services`
+		ON `service_id` = `services`.`id` WHERE `budget_id`='".$id."'") or trigger_error(mysqli_error($db),E_USER_ERROR);
 } else {
 	$id = '';
   $created_at = '';
@@ -19,6 +19,7 @@ if (is_array($budget)) {
   $notes = '';
   $total = 0.0;
   $vat = 0.0;
+  $nett = 0.0;
   $status_id = '';
 	$budget_services =[];
 	$service_budget_id  ='';
@@ -28,7 +29,36 @@ if (!isset($_GET['ajaxed'])) {
 	$myInterface->get_header();
 }
 ?>
+<script>
+$(document).ready(function () {
+// we used jQuery 'keyup' to trigger the computation as the user type
+$("input.amount, input.price, input.discount").keyup(function () {
+	var id = this.id;
+	var splitid = id.split('_');
+	var index = splitid[1];
+	var amount = parseFloat($("#amount_"+index).val())|| 0;
+	var price = parseFloat($("#price_"+index).val()) || 0;
+	var subtotal = amount * price;
+	var discount = parseFloat($("#discount_"+index).val()) || 0;
+	var final_discount = (discount/100) * subtotal;
+	$("#total_"+index).val(parseFloat(subtotal - final_discount).toFixed(2));
+  var sum = 0;
+  var i = 0;
+	while (i < 15) {
+      sum += parseFloat($("#total_"+i).val()) || 0;;
+      i++;
+  }
+	$('#nett').val(parseFloat(sum).toFixed(2));
+	var vat_calculation = (21/100) * sum;
+	$('#vat').val(parseFloat(vat_calculation).toFixed(2));
+  // set the computed value to 'total' textbox
+  $('#total').val(parseFloat(sum + vat_calculation).toFixed(2));
+
+});
+});
+</script>
 <script type="text/javascript">
+
 // $(document).ready(function(){
  //$(".service_name").keydown(function(){
  $("input.service_name").live("keydown.autocomplete", function() {
@@ -78,24 +108,7 @@ if (!isset($_GET['ajaxed'])) {
 			}
 		});
 	});
-	// Add more
-    $('#addmore').click(function(){
-        // Get last id
-        var lastname_id = $('.tr_input input[type=text]:nth-child(1)').last().attr('id');
-        var split_id = lastname_id.split('_');
-        // New index
-        var index = Number(split_id[1]) + 1;
-        // Create row with input elements
-        var html = "<tr class='tr_input'><td><input type='text' class='service_name' id='name_"+index+"' placeholder='Enter code'></td><td><input type='text' class='name' id='description_"+index+"' ></td><td><input type='text' class='smallinput' id='amount_"+index+"' ></td><td><input type='text' class='smallinput' id='price_"+index+"' ></td><td><input type='text' class='smallinput' id='discount_"+index+"' ></td><td><input type='text' class='smallinput' id='total_"+index+"'></td><td><input type='text' class='smallinput' id='totaldiscount_"+index+"' ></td></tr>";
-        // Append data
-        $('tbody').append(html);
-
-					 $('tbody').find('input[type=text]:last').autocomplete({
-							 source: availableAttributes
-					 });
-    });
-// });
-</script>
+	</script>
 		<form id="budget" method="post" action="requetes/insertBudget.php">
 			<fieldset>
 				<input type="hidden" id="id" name="id" value="<?php echo $id?>">
@@ -136,18 +149,18 @@ if (!isset($_GET['ajaxed'])) {
 			  </thead>
 			  <tbody>
 					<?php $i = 1;
-					while($i <= 15) {
+					while(($budget_service = mysqli_fetch_array($selectBudgetServices)) || ($i <= 12)){
 					?>
 			   <tr class='tr_input'>
-			    <td><input type='text' class='service_name' id='name_<?php echo ($i)?>' name='name_<?php echo ($i)?>' placeholder=''/></td>
-			    <td><input type='text' class='name' id='description_<?php echo ($i)?>' name='description_<?php echo ($i)?>'/></td>
-			    <td><input type='text' class='smallinput' id='amount_<?php echo ($i)?>' name='amount_<?php echo ($i)?>'/></td>
-			    <td><input type='text' class='smallinput' id='price_<?php echo ($i)?>'  name='price_<?php echo ($i)?>' ></td>
-			    <td><input type='text' class='smallinput' id='discount_<?php echo ($i)?>' name='discount_<?php echo ($i)?>'/></td>
-			    <td><input type='text' class='smallinput' id='total_<?php echo ($i)?>' name='total_<?php echo ($i)?>'/></td>
-			    <td><input type='text' class='smallinput' id='totaldiscount_<?php echo ($i)?>' name='totaldiscount_<?php echo ($i)?>'/></td>
-					<input type="hidden" id="serviceid_<?php echo ($i)?>" name="serviceid_<?php echo ($i)?>"/>
-					<input type="hidden" id="servicebudgetid_<?php echo ($i)?>" name="servicebuddgetid_<?php echo ($i)?>"/>
+			    <td><input type='text' class='service_name' id='name_<?php echo ($i)?>' name='name_<?php echo ($i)?>' placeholder='' value="<?php if(isset($budget_service['name']))echo $budget_service['name']?>"/></td>
+			    <td><input type='text' class='name' id='description_<?php echo ($i)?>' name='description_<?php echo ($i)?>' value="<?php if(isset($budget_service['description']))echo $budget_service['description']?>"/></td>
+			    <td><input type='text' class='smallinput amount' id='amount_<?php echo ($i)?>' name='amount_<?php echo ($i)?>' value="<?php if(isset($budget_service['amount']))echo $budget_service['amount']?>"/></td>
+			    <td><input type='text' class='smallinput price' id='price_<?php echo ($i)?>'  name='price_<?php echo ($i)?>' value="<?php if(isset($budget_service['price']))echo $budget_service['price']?>"/>€</td>
+			    <td>-<input type='text' class='smallinput discount' id='discount_<?php echo ($i)?>' name='discount_<?php echo ($i)?>' value="<?php if(isset($budget_service['discount']))echo $budget_service['discount']?>"/>%</td>
+			    <td><input type='text' class='smallinput total' id='total_<?php echo ($i)?>' name='total_<?php echo ($i)?>'  value="<?php if(isset($budget_service['total']))echo $budget_service['total']?>"/>€</td>
+			    <td><input type='text' class='smallinput' id='totaldiscount_<?php echo ($i)?>' name='totaldiscount_<?php echo ($i)?>' value="<?php if(isset($budget_service['total_discount']))echo $budget_service['total_discount']?>"/>€</td>
+					<input type="hidden" id="serviceid_<?php echo ($i)?>" name="serviceid_<?php echo ($i)?>" value="<?php if(isset($budget_service['service_id']))echo $budget_service['service_id']?>"/>
+					<input type="hidden" id="servicebudgetid_<?php echo ($i)?>" name="servicebudgetid_<?php echo ($i)?>" value="<?php if(isset($budget_service['id']))echo $budget_service['id']?>"/>
 			   </tr>
 			 <?php
 				 $i++;
@@ -155,10 +168,13 @@ if (!isset($_GET['ajaxed'])) {
 				 <tr >
 					<td colspan="4"></td>
 					<td>
-						<b>Vat :</b> <input name="vat" type="text" value="<?php echo htmlspecialchars($vat)?>" id="vat"/>
+						<b>Total Neto :</b> <input name="nett" type="text" value="<?php echo htmlspecialchars($nett)?>" id="nett"/>€
 					</td>
 					<td>
-						<b>Total :</b> <input name="total" type="text" value="<?php echo htmlspecialchars($total)?>" id="total"/>
+						<b>Vat (21%) :</b> <input name="vat" type="text" value="<?php echo htmlspecialchars($vat)?>" id="vat"/>€
+					</td>
+					<td>
+						<b>Total :</b> <input name="total" type="text" value="<?php echo htmlspecialchars($total)?>" id="total"/>€
 					</td>
 				 </tr>
 			  </tbody>

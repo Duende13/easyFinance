@@ -7,7 +7,7 @@
 -- Server version: 5.5.15
 -- PHP Version: 5.3.8
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="";
 SET time_zone = "+00:00";
 
 
@@ -135,17 +135,6 @@ CREATE TABLE  IF NOT EXISTS  `services` (
 
 -- --------------------------------------------------------
 --
--- Table structure for table `statuses`
---
-CREATE TABLE  IF NOT EXISTS  `statuses` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) ,
-  `description` varchar(255) ,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
---
 -- Table structure for table `budgets`
 --
 CREATE TABLE  IF NOT EXISTS  `budgets` (
@@ -154,18 +143,19 @@ CREATE TABLE  IF NOT EXISTS  `budgets` (
   `presented_at` date NULL DEFAULT '0000-00-00',
   `paid_at` date NULL DEFAULT '0000-00-00',
   `invoice_number` varchar(255),
+  `status` varchar(100),
   `notes` text,
   `total` DECIMAL(8,2),
   `vat` DECIMAL(8,2),
+  `nett` DECIMAL(8,2),
   `auto_id` int(11),
   `address_id` int(11),
-  `status_id` int(11),
   `client_id` int(11),
+  `subtotal` DECIMAL(8,2),
   PRIMARY KEY (`id`),
     FOREIGN KEY (`auto_id`) REFERENCES `autos`(`id`),
     FOREIGN KEY (`client_id`) REFERENCES `clients`(`id`),
-    FOREIGN KEY (`address_id`) REFERENCES `addresses`(`id`),
-    FOREIGN KEY (`status_id`) REFERENCES `statuses`(`id`)
+    FOREIGN KEY (`address_id`) REFERENCES `addresses`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -178,7 +168,7 @@ CREATE TABLE  IF NOT EXISTS  `budget_services` (
   `price` DECIMAL(8,2),
   `amount` DECIMAL(8,1),
   `total` DECIMAL(8,2),
-  `total_dcto` DECIMAL(8,2),   
+  `total_dcto` DECIMAL(8,2),
   `service_id` int(11),
   `budget_id` int(11),
   PRIMARY KEY (`id`),

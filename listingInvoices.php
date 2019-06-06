@@ -40,7 +40,7 @@ $selectBudgets= mysqli_query($db, "SELECT id, created_at, status_id, total, clie
 		?>
 		<tr class="budget" id="element_<?php echo $budgets['id']; ?>">
 			<td>
-					<input type="checkbox" name="selectionElements[]" value="<?php echo $autos['id'] ?>" />
+					<input type="checkbox" name="selectionElements[]" value="<?php echo $budgets['id'] ?>" />
 					<a class="button small mediumGrey modifier popup" href="formInvoice.php?id=<?php echo $budgets['id']?>" title="Editar">
 						Editar
 					</a>
@@ -48,7 +48,9 @@ $selectBudgets= mysqli_query($db, "SELECT id, created_at, status_id, total, clie
 			<td><?php echo htmlspecialchars($budgets['id'])?></td>
 			<td><?php echo htmlspecialchars($budgets['created_at'])?></td>
 			<td><?php echo htmlspecialchars($budgets['status_id'])?></td>
-			<td><?php echo htmlspecialchars($budgets['paid_at'])?></td>
+			<td>
+				<!-- <?php echo htmlspecialchars($budgets['paid_at'])?> -->
+			</td>
 			<td><?php echo htmlspecialchars($budgets['total'])?></td>
 			<td><?php echo htmlspecialchars($budgets['client_id'])?></td>
 			<td><?php echo htmlspecialchars($budgets['auto_id'])?></td>

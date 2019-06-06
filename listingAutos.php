@@ -27,7 +27,7 @@ $search_clients = mysqli_query($db, "SELECT * FROM `clients` GROUP BY `id`");
 <table>
 	<tr class="legende">
 		<th></th>
-		<th>Id/th>
+		<th>Id</th>
 		<th>Matrícula</th>
 		<th>Marca</th>
 		<th>Modelo</th>
