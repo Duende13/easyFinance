@@ -42,6 +42,9 @@ $selectBudgets= mysqli_query($db, "SELECT id, created_at, status, total, client_
 					<a class="button small mediumGrey modifier popup" href="formBudget.php?id=<?php echo $budgets['id']?>" title="Editar">
 						Editar
 					</a>
+					<a class="button small mediumGrey modifier" target="_blank" href="budget_pdf.php?id=<?php echo $budgets['id']?>" title="PDF">
+						PDF
+					</a>
 			</td>
 			<td><?php echo htmlspecialchars($budgets['id'])?></td>
 			<td><?php echo htmlspecialchars($budgets['created_at'])?></td>
