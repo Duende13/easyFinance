@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 	function reloadSection(section){
 		if ($('#'+section).length) {
+
 		$('#'+section).load('listing.php?type='+type+'&ordre='+ordre+'&annee='+annee+'&ajaxed=1',function(){
 				initialize(section);
 			});
@@ -25,8 +26,8 @@ $(document).ready(function() {
 			$('#'+section+' form')
 			.prepend('<input type="hidden" name="ajaxed" value="1" />')
 			.ajaxForm({
-				// resetForm: true,
-				// sectionName: section,
+				resetForm: true,
+				sectionName: section,
 				dataType: "json",
 				beforeSubmit: ajaxShowRequest,
 				success: ajaxShowResponse,
@@ -40,9 +41,9 @@ $(document).ready(function() {
 		var nombreElementsSelectionnes = elementsATraiter.size();
 		if (nombreElementsSelectionnes > 0) {
 			if (nombreElementsSelectionnes == 1) {
-				var confirmation = confirm("Voulez-vous supprimer "+nombreElementsSelectionnes+" élément ?");
+				var confirmation = confirm("Quieres borrar "+nombreElementsSelectionnes+" elemento ?");
 			}else{
-				var confirmation = confirm("Voulez-vous supprimer "+nombreElementsSelectionnes+" éléments ?");
+				var confirmation = confirm("Quieres borrar "+nombreElementsSelectionnes+" elementos ?");
 			}
 			if (confirmation) {
 				$('#'+options.sectionName+' input[type="submit"],input[type="button"]').attr('disabled','disabled');
@@ -51,7 +52,7 @@ $(document).ready(function() {
 				return false;
 			}
 		} else {
-			$.jGrowl('Aucun élément sélectionné.');
+			$.jGrowl('Eliminado elementos seleccionados.');
 			return false;
 		}
 	}
@@ -65,14 +66,13 @@ $(document).ready(function() {
 	}
 
 	function ajaxShowResponseFormDialog(data, statusText){
-		// alert('test');
 		$.jGrowl(data.msg);
 		reloadSection('Liste');
 		$('#dialog').dialog('close');
 	}
 
 	function javascriptError(data, statusText){
-		$.jGrowl("Erreur, veuillez recharger la page.");
+		$.jGrowl("Ha habido un error");
 		console.log(statusText);
 		console.log(data);
 	}
