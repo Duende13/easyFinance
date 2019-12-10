@@ -29,12 +29,12 @@ class interface_{
 		$return .= '<link type="text/css" href="plugins/jGrowl/jquery.jgrowl.css" rel="stylesheet" media="screen" />'."\r";
 		$return .= '<link type="text/css" href="css/print.css" rel="stylesheet" media="print" />'."\r";
 		$return .= '<link type="text/css" href="css/jquery-ui.min.css"  rel="stylesheet"  />'."\r";
-		// Javascript
+		// // Javascript
 		$return .= '<script src="plugins/jquery-ui.min.js" type="text/javascript"></script>'."\r";
 		$return .= '<script type="text/javascript" src="plugins/jquery-ui/js/jquery-'.JQUERY_VERSION.'.min.js"></script>'."\r";
-		$return .= '<script type="text/javascript" src="plugins/jquery-ui/js/jquery-ui-'.JQUERY_UI_VERSION.'.custom.min.js"></script>'."\r";
 		$return .= '<script type="text/javascript" src="plugins/jquery-form.js"></script>'."\r";
 		$return .= '<script type="text/javascript" src="plugins/jGrowl/jquery.jgrowl_minimized.js"></script>'."\r";
+		$return .= '<script type="text/javascript" src="plugins/jquery-ui/js/jquery-ui-'.JQUERY_UI_VERSION.'.custom.min.js"></script>'."\r";
 		$return .= '<script type="text/javascript" src="js/functions.js"></script>'."\r";
 		// Meta Description - Keywords - Author
 		$return .= '<meta name="author" content="Susana Ruiz" />'."\r";

@@ -8,7 +8,9 @@ if (is_array($client)) {
 	extract($client);
 	$selectAddress = mysqli_query($db,"SELECT * FROM `addresses` WHERE `id` ='".$address_id."'") or trigger_error(mysqli_error($db),E_USER_ERROR);
 	$address = mysqli_fetch_array($selectAddress);
-	extract($address);
+	if (is_array($address)) {
+		extract($address);
+	}
 } else {
 	$id = '';
 	$dni = '';

@@ -8,8 +8,8 @@ $selectBudget = mysqli_query($db,"SELECT * FROM `budgets` WHERE `id` ='".$id."'"
 $budget = mysqli_fetch_array($selectBudget);
 if (is_array($budget)) {
 	extract($budget);
-	$selectBudgetServices = mysqli_query($db,"SELECT `budget_services`.*, `services`.`name`, `services`.`description` FROM `budget_services` INNER JOIN `services`
-		ON `service_id` = `services`.`id` WHERE `budget_id`='".$id."'") or trigger_error(mysqli_error($db),E_USER_ERROR);
+	$selectBudgetServices = mysqli_query($db,"SELECT `budget_services`.*, `services`.`name`, `services`.`description` FROM `budget_services` INNER JOIN `services` ON `service_id` = `services`.`id` WHERE `budget_id`='".$id."'") or trigger_error(mysqli_error($db),E_USER_ERROR);
+	$budget_service = mysqli_fetch_array($selectBudgetServices);
 } else {
 	$id = '';
   $created_at = '';
@@ -23,6 +23,7 @@ if (is_array($budget)) {
   $status_id = '';
 	$budget_services =[];
 	$service_budget_id  ='';
+	$budget_service = [];
 }
 if (!isset($_GET['ajaxed'])) {
 	$myInterface->set_title("EasyFinance – Presupuesto");
@@ -96,7 +97,6 @@ $("input.amount, input.price, input.discount").keyup(function () {
               var service_name = response[0]['name'];
               var service_description = response[0]['description'];
               var service_price = response[0]['price'];
-
               document.getElementById('name_'+index).value = service_name;
               document.getElementById('description_'+index).value = service_description;
               document.getElementById('price_'+index).value = service_price;
@@ -149,7 +149,7 @@ $("input.amount, input.price, input.discount").keyup(function () {
 			  </thead>
 			  <tbody>
 					<?php $i = 1;
-					while(($budget_service = mysqli_fetch_array($selectBudgetServices)) || ($i <= 12)){
+					while(($budget_service) || ($i <= 12)){
 					?>
 			   <tr class='tr_input'>
 			    <td><input type='text' class='service_name' id='name_<?php echo ($i)?>' name='name_<?php echo ($i)?>' placeholder='' value="<?php if(isset($budget_service['name']))echo $budget_service['name']?>"/></td>

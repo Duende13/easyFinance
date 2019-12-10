@@ -56,14 +56,14 @@ else:
 endif;
 
 switch ($type) {
-	case 'sortantes':
-	$db = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE) or trigger_error(mysqli_error($db),E_USER_ERROR);
-		$selectFactures = mysqli_query($db, "SELECT * FROM `".$table."` LEFT JOIN `clients` ON `".$table."`.`id_client`=`clients`.`id_client` ".$req." ORDER BY ".$req2." `date`, `numero`") or trigger_error(mysqli_error($db),E_USER_ERROR);
-		break;
+	// case 'sortantes':
+	// $db = mysqli_connect(HOSTNAME, USERNAME, PASSWORD, DATABASE) or trigger_error(mysqli_error($db),E_USER_ERROR);
+	// 	$selectFactures = mysqli_query($db, "SELECT * FROM `".$table."` LEFT JOIN `clients` ON `".$table."`.`id_client`=`clients`.`id_client` ".$req." ORDER BY ".$req2." `date`, `numero`") or trigger_error(mysqli_error($db),E_USER_ERROR);
+	// 	break;
 
-	default:
-		$selectFactures = mysqli_query($db, "SELECT * FROM `".$table."` ".$req." ORDER BY `date`") or trigger_error(mysqli_error($db),E_USER_ERROR);
-		break;
+	// default:
+	// 	$selectFactures = mysqli_query($db, "SELECT * FROM `".$table."` ".$req." ORDER BY `date`") or trigger_error(mysqli_error($db),E_USER_ERROR);
+	// 	break;
 }
 $nombreFactures = mysqli_num_rows($selectFactures);
 ?>

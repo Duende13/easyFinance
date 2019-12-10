@@ -40,7 +40,7 @@ if(isset($_GET['ordre']) && !empty($_GET['ordre'])){ // classement par client : 
 }
 $myInterface->set_title("EasyFinance – Facturas");
 $myInterface->get_header();
-include_once ('include/menu_annees.php');
+// include_once ('include/menu_annees.php');
 include_once ('include/onglets.php');
 ?>
 <div id="Liste">

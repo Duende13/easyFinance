@@ -9,7 +9,7 @@ if (isset($_GET['ajaxed']) && $_GET['ajaxed'] == 1) {
 	$myInterface = new interface_();
 }
 $type = "invoices";
-$selectBudgets= mysqli_query($db, "SELECT id, created_at, status_id, total, client_id, auto_id FROM `budgets` where `id` is not NULL ORDER BY `id`") or trigger_error(mysqli_error($db),E_USER_ERROR);
+$selectBudgets= mysqli_query($db, "SELECT id, created_at,status, total, client_id, auto_id FROM `budgets` where `id` is not NULL ORDER BY `id`") or trigger_error(mysqli_error($db),E_USER_ERROR);//status_id,
 ?>
 <form id="listing" action="requetes/traitements.php" method="post">
 	<p class="tools">
@@ -41,13 +41,13 @@ $selectBudgets= mysqli_query($db, "SELECT id, created_at, status_id, total, clie
 		<tr class="budget" id="element_<?php echo $budgets['id']; ?>">
 			<td>
 					<input type="checkbox" name="selectionElements[]" value="<?php echo $budgets['id'] ?>" />
-					<a class="button small mediumGrey modifier popup" href="formInvoice.php?id=<?php echo $budgets['id']?>" title="Editar">
+					<a class="button small mediumGrey modifier popup" href="formBudget.php?id=<?php echo $budgets['id']?>" title="Editar">
 						Editar
 					</a>
 			</td>
 			<td><?php echo htmlspecialchars($budgets['id'])?></td>
 			<td><?php echo htmlspecialchars($budgets['created_at'])?></td>
-			<td><?php echo htmlspecialchars($budgets['status_id'])?></td>
+			<td><?php echo htmlspecialchars($budgets['status'])?></td>
 			<td>
 				<!-- <?php echo htmlspecialchars($budgets['paid_at'])?> -->
 			</td>

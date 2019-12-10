@@ -14,8 +14,8 @@ $selectBudgets= mysqli_query($db, "SELECT id, created_at, status, total, client_
 <form id="listing" action="requetes/traitements.php" method="post">
 	<p class="tools">
 		<a href="formBudget.php" class="button medium orange" id="boutonAjouterBudget" title="Nuevo Presupuesto">Nuevo Presupuesto</a>
-		<!-- <input type="submit" value="Ajouter un client" id="boutonAjouterClient" name="boutonAjouter" title="Ajouter un Client" />
-		<input type="submit" class="button medium mediumGrey" value="Eliminar los clientes seleccionados" id="boutonSupprimer" name="boutonSupprimer" />-->
+		<!-- <input type="submit" value="Ajouter un client" id="boutonAjouterClient" name="boutonAjouter" title="Ajouter un Client" />-->
+		<input type="submit" class="button medium mediumGrey" value="Eliminar los clientes seleccionados" id="boutonSupprimer" name="boutonSupprimer" />
 		<input type="hidden" name="type" value="<?php echo $type ?>" id="type" />
 		<input type="hidden" value="budgets" name="table" />
 	</p>
